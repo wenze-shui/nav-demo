@@ -130,11 +130,15 @@
             function listenToKeyborad() {
 				document.onkeypress = function (getKeyboardInpout) {
 					key = getKeyboardInpout['key']
-					website = hash[key]
-					// location.href = 'http://' + website
-					window.open('http://' + website)
+                    website = hash[key]
+                    if (hash[key]) {
+                        // location.href = 'http://' + website
+					    window.open('http://' + website)
+                    }else{
+                        console.log(key)
+                    }
 				}
-			}
+            }
 		</script>
 	</body>
 </html>
