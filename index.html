@@ -100,8 +100,8 @@
 						buttonx.onclick = function (click) {
 							console.log(click)
 							var button2 = click['target']
-							var img2 = button2.previousSibling
-							var key = click.target.row[index2]
+                            var img2 = button2.previousSibling
+							var key = click.target.id
 							x = prompt('给我一个网址')
 							hash[key] = x
 							img2.src = 'http://' + x + '/favicon.ico'
