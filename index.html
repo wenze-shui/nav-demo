@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>我的导航</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<header></header>
+		<main>
+			<style></style>
+			<div class="wrapper" id="keyboard"></div>
+		</main>
+		<footer></footer>
+		<script>
+			// 1. 初始化数据
+			var datahash = init()
+			var keys = datahash['keys']
+			var hash = datahash['hash']
+
+			// 2. 生成键盘
+			createKeyboard()
+
+            // 监听键盘
+            listenToKeyborad()
+
+			// 功能函数-------------------------------------------------------------------------------------------------------
+			// 初始化哈希
+			function init() {
+				var keys = {
+					0: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+					1: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+					2: ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
+					length: 3,
+				}
+				var hash = {
+					q: '',
+					w: '',
+					e: '',
+					r: '',
+					t: '',
+					y: '',
+					u: '',
+					i: '',
+					o: '',
+					p: '',
+					a: '',
+					s: '',
+					d: '',
+					f: '',
+				}
+				// 取出localstorage中的hash
+				var hashInlocalStorage = getFromLocalStorage('hashUserSet')
+				if (hashInlocalStorage) {
+					hash = hashInlocalStorage
+				}
+
+				function getFromLocalStorage(name) {
+					return JSON.parse(localStorage.getItem(name) || 'null')
+				}
+				return {
+					keys: keys,
+					hash: hash,
+				}
+			}
+			// 创建按键
+			function tag(name, attributes) {
+				var element = document.createElement(name)
+				for (var key in attributes) {
+					element[key] = attributes[key]
+				}
+				return element
+			}
+			function createKeyboard() {
+				for (var index = 0; index < keys['length']; index++) {
+					var div1 = tag('div', {})
+					keyboard.appendChild(div1)
+					var row = keys[index]
+					var index2 = 0
+					for (var index2 = 0; index2 < row.length; index2++) {
+						var buttonx = tag('button', {
+							textContent: '编辑',
+							id: row[index2],
+						})
+
+						var img = document.createElement('img')
+						if (hash[row[index2]]) {
+							img.src =
+								'http://' + hash[row[index2]] + '/favicon.ico'
+						} else {
+							img.src =
+								'https://i.loli.net/2020/09/04/7PbTn8k3eDwXB2R.png'
+						}
+						img.onerror = function (xxx) {
+							xxx.target.src =
+								'https://i.loli.net/2020/09/04/7PbTn8k3eDwXB2R.png'
+						}
+
+						buttonx.onclick = function (click) {
+							console.log(click)
+							var button2 = click['target']
+							var img2 = button2.previousSibling
+							var key = click.target.row[index2]
+							x = prompt('给我一个网址')
+							hash[key] = x
+							img2.src = 'http://' + x + '/favicon.ico'
+							img.onerror = function (xxx) {
+								xxx.target.src =
+									'https://i.loli.net/2020/09/04/7PbTn8k3eDwXB2R.png'
+							}
+							localStorage.setItem(
+								'hashUserSet',
+								JSON.stringify(hash)
+							)
+						}
+
+                        var span = tag('span', {textContent: row[index2]})
+						var kbdRow = tag('kbd', {
+							className: 'Key',
+                        })
+                        kbdRow.appendChild(span)
+						div1.appendChild(kbdRow)
+						kbdRow.appendChild(img)
+						kbdRow.appendChild(buttonx)
+					}
+				}
+            }
+            
+            function listenToKeyborad() {
+				document.onkeypress = function (getKeyboardInpout) {
+					key = getKeyboardInpout['key']
+					website = hash[key]
+					// location.href = 'http://' + website
+					window.open('http://' + website)
+				}
+			}
+		</script>
+	</body>
+</html>
